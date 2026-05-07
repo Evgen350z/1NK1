@@ -3,339 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1NK | Unfair Advantage</title>
-    
-    <!-- Модные шрифты -->
+    <title>1NK | Algorithmic Leverage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* Базовый сброс и минимализм */
-        * {
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --accent: #ffffff;
+        }
+
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* Скрываем стандартный курсор для кастомного */
-        }
-
-        :root {
-            --bg: #050505;
-            --text: #ffffff;
-            --accent: #ff3366; /* Дерзкий акцент, если понадобится, но пока ч/б */
-        }
-
-        body {
-            background-color: var(--bg);
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            selection-background-color: var(--accent);
         }
 
-        /* Кастомный курсор */
-        .cursor {
+        /* WebGL Canvas */
+        #webgl-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Grain Overlay (Эффект дорогой текстуры бумаги/пленки) */
+        .grain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
             pointer-events: none;
-            mix-blend-mode: difference;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
+            z-index: 99;
         }
 
-        /* Общие стили секций */
-        section {
-            min-height: 100vh;
-            padding: 2rem 5vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Syne', sans-serif;
-            text-transform: uppercase;
-            line-height: 0.9;
-        }
-
-        /* Навигация */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 2rem 5vw;
             display: flex;
             justify-content: space-between;
+            padding: 40px 60px;
             z-index: 100;
             mix-blend-mode: difference;
         }
 
         .logo {
             font-family: 'Syne', sans-serif;
-            font-weight: 800;
             font-size: 1.5rem;
-            letter-spacing: -1px;
-        }
-
-        .nav-link {
-            font-size: 0.9rem;
-            text-decoration: none;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Hero секция */
-        .hero {
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-title {
-            font-size: clamp(4rem, 12vw, 15rem);
+            letter-spacing: -2px;
             font-weight: 800;
-            letter-spacing: -0.05em;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         }
 
-        .hero-title span {
-            display: inline-block;
-            transform: translateY(100%);
-            opacity: 0;
+        .menu-trigger {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-bottom: 1px solid white;
+            padding-bottom: 5px;
+            cursor: pointer;
         }
 
-        .hero-subtitle {
-            margin-top: 2rem;
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            max-width: 600px;
-            opacity: 0.7;
-            font-weight: 300;
-        }
-
-        /* Секция манифеста (Statement) */
-        .statement {
-            background-color: #111;
-        }
-
-        .statement-text {
-            font-size: clamp(2rem, 5vw, 6rem);
-            max-width: 90%;
-            opacity: 0.2;
-        }
-
-        /* Секция формы */
-        .contact {
+        section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
             align-items: center;
+            padding: 0 10%;
         }
 
-        .contact h2 {
-            font-size: clamp(3rem, 8vw, 10rem);
-            margin-bottom: 3rem;
-            text-align: center;
+        .hero {
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        form {
-            width: 100%;
-            max-width: 600px;
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            line-height: 0.85;
+            margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            pointer-events: none;
         }
 
-        input, textarea {
+        .hero h1 span {
+            overflow: hidden;
+            display: block;
+        }
+
+        .tagline {
+            margin-top: 40px;
+            font-size: 1.2rem;
+            max-width: 450px;
+            line-height: 1.6;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Секция контента с горизонтальным смещением */
+        .reveal-section {
+            height: 200vh; /* Для скролл-анимации */
+        }
+
+        .content-block {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-statement {
+            font-family: 'Syne', sans-serif;
+            font-size: 5vw;
+            text-align: center;
+            max-width: 80%;
+            line-height: 1;
+        }
+
+        /* Форма в стиле "Tesla Stealth" */
+        .footer-form {
+            background: #000;
+            padding: 100px 10%;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+        }
+
+        .form-left h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .input-group input {
+            width: 100%;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 20px 0;
             color: white;
-            font-size: 1.5rem;
-            padding: 1rem 0;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, textarea:focus {
+            font-size: 1.2rem;
             outline: none;
-            border-bottom: 1px solid white;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.2);
+        .input-group label {
+            position: absolute;
+            top: 20px;
+            left: 0;
             text-transform: uppercase;
-            font-size: 1rem;
+            font-size: 0.7rem;
             letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            transition: 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+            pointer-events: none;
         }
 
-        button {
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            transform: translateY(-40px);
+            color: var(--accent);
+        }
+
+        .submit-btn {
             background: white;
             color: black;
-            border: none;
-            padding: 1.5rem;
-            font-size: 1.2rem;
-            font-family: 'Syne', sans-serif;
-            font-weight: 700;
+            padding: 30px 80px;
+            border-radius: 100px;
+            font-weight: 800;
             text-transform: uppercase;
-            margin-top: 2rem;
-            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+            border: none;
+            transition: 0.5s;
         }
 
-        button:hover {
-            background: #e0e0e0;
-            transform: scale(0.98);
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255,255,255,0.2);
+        }
+
+        /* Custom Cursor */
+        #cursor-ball {
+            position: fixed;
+            top: 0; left: 0;
+            width: 10px; height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 1000;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="cursor" id="cursor"></div>
+    <div class="grain"></div>
+    <div id="cursor-ball"></div>
+    <div id="webgl-container"></div>
 
     <nav>
-        <div class="logo">1NK</div>
-        <a href="#contact" class="nav-link">Initiate</a>
+        <div class="logo">1NK.CORE</div>
+        <div class="menu-trigger">System Status: Active</div>
     </nav>
 
     <section class="hero">
-        <h1 class="hero-title" id="hero-title">
-            <span>STOP</span> <span>HIRING.</span><br>
-            <span>START</span> <span>SCALING.</span>
+        <h1>
+            <span class="line">ELIMINATE</span>
+            <span class="line">HUMAN</span>
+            <span class="line">ERROR.</span>
         </h1>
-        <p class="hero-subtitle" id="hero-sub">
-            You are bleeding time. We build intelligent automation ecosystems for businesses that refuse to stay small.
+        <p class="tagline">
+            We architect bespoke autonomous infrastructures for high-scale ventures in the US, UK, and Canada. Your operational overhead is a legacy bug. We are the patch.
         </p>
     </section>
 
-    <section class="statement">
-        <h2 class="statement-text" id="statement-text">
-            YOUR COMPETITORS ARE SLEEPING. WE ENGINEER THE SYSTEMS THAT TURN THEIR REST INTO YOUR UNFAIR ADVANTAGE. NO TEMPLATES. NO EXCUSES. JUST PURE EFFICIENCY.
-        </h2>
+    <section class="reveal-section">
+        <div class="content-block">
+            <h2 class="big-statement" id="sticky-text">
+                TRADITIONAL BUSINESS IS RIGGED. <br>
+                CODE IS THE ONLY UNFAIR ADVANTAGE LEFT.
+            </h2>
+        </div>
     </section>
 
-    <section class="contact" id="contact">
-        <h2 class="contact-title">DROP THE BS.<br>LET'S BUILD.</h2>
-        <form action="#" method="POST">
-            <input type="text" placeholder="Your Name / Company" required>
-            <input type="email" placeholder="Direct Email" required>
-            <textarea rows="3" placeholder="What process is slowing you down?" required></textarea>
-            <button type="submit">Deploy Automation</button>
-        </form>
+    <section class="footer-form">
+        <div class="form-grid">
+            <div class="form-left">
+                <h2>READY TO<br>UPGRADE?</h2>
+                <p>Limited capacity. We only onboard 2 high-intensity projects per quarter.</p>
+            </div>
+            <div class="form-right">
+                <form>
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label>Ecosystem Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" required>
+                        <label>Lead Intelligence (Email)</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label>Annual Revenue Target</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Initiate Protocol</button>
+                </form>
+            </div>
+        </div>
     </section>
 
-    <!-- Подключение библиотек -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <!-- Скрипты: Three.js + GSAP + Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        // Сложный шейдер жидкого металла
+        uniform float time;
+        uniform vec2 resolution;
+        varying vec2 vUv;
+
+        void main() {
+            vec2 p = -1.0 + 2.0 * vUv;
+            p.x *= resolution.x / resolution.y;
+            
+            float ct = time * 0.5;
+            for(int i=1; i<4; i++) {
+                p.x += 0.3 / float(i) * sin(float(i) * 3.0 * p.y + ct);
+                p.y += 0.3 / float(i) * cos(float(i) * 3.0 * p.x + ct);
+            }
+            
+            float color = 0.5 + 0.5 * sin(p.x + p.y);
+            gl_FragColor = vec4(vec3(color * 0.15), 1.0);
+        }
+    </script>
 
     <script>
-        // 1. Инициализация плавного скролла (Lenis)
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Эффект плавного скольжения
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
-
+        // --- 1. ПЛАВНЫЙ СКРОЛЛ ---
+        const lenis = new Lenis();
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
 
-        // 2. Кастомный курсор
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
+        // --- 2. THREE.JS ШЕЙДЕРНЫЙ ФОН ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        const uniforms = {
+            time: { value: 0 },
+            resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        };
+
+        const material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: document.getElementById('vertexShader').textContent,
+            fragmentShader: document.getElementById('fragmentShader').textContent
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        function animate(time) {
+            uniforms.time.value = time * 0.001;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 3. GSAP АНИМАЦИИ ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Появление линий заголовка
+        gsap.from(".line", {
+            y: 200,
+            skewY: 10,
+            stagger: 0.1,
+            duration: 1.5,
+            ease: "power4.out"
+        });
+
+        // Скролл-эффект для центрального текста
+        gsap.to("#sticky-text", {
+            scrollTrigger: {
+                trigger: ".reveal-section",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true
+            },
+            scale: 1.5,
+            opacity: 0,
+            filter: "blur(20px)"
+        });
+
+        // Кастомный курсор с инерцией
+        const cursor = document.getElementById('cursor-ball');
+        window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, {
                 x: e.clientX,
                 y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
+                duration: 0.6,
+                ease: "power3.out"
             });
         });
 
-        // Увеличение курсора при наведении на интерактивные элементы
-        const interactives = document.querySelectorAll('a, button, input, textarea');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.width = '60px';
-                cursor.style.height = '60px';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.width = '20px';
-                cursor.style.height = '20px';
-            });
-        });
-
-        // 3. Анимации GSAP
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Анимация Hero при загрузке
-        const tl = gsap.timeline();
-        tl.to("#hero-title span", {
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "power4.out",
-            delay: 0.2
-        })
-        .fromTo("#hero-sub", 
-            { opacity: 0, y: 30 }, 
-            { opacity: 0.7, y: 0, duration: 1, ease: "power2.out" }, 
-            "-=0.5"
-        );
-
-        // Анимация проявления текста манифеста при скролле (эффект Apple)
-        // Разбиваем текст на слова для поочередного включения
-        const statementText = document.getElementById('statement-text');
-        const words = statementText.innerText.split(' ');
-        statementText.innerHTML = '';
-        words.forEach(word => {
-            const span = document.createElement('span');
-            span.innerText = word + ' ';
-            statementText.appendChild(span);
-        });
-
-        gsap.to("#statement-text span", {
-            color: "#ffffff",
-            opacity: 1,
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: ".statement",
-                start: "top 60%",
-                end: "bottom 80%",
-                scrub: 1, // Привязка анимации к скроллу (тот самый "дорогой" эффект)
-            }
-        });
-
-        // Анимация формы
-        gsap.from(".contact-title", {
-            y: 100,
-            opacity: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: ".contact",
-                start: "top 70%",
-            }
-        });
-
-        gsap.from("form input, form textarea, form button", {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            scrollTrigger: {
-                trigger: "form",
-                start: "top 80%",
-            }
+        // Ресайз
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
