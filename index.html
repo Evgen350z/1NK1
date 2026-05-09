@@ -3,80 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1NK | Turn Messages Into Booked Clients</title>
+    <title>1NK | Enterprise AI Revenue Infrastructure</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ГЛУБОКИЕ ЦВЕТА ФОНА */
-            --bg-color: #020204; 
-            --bg-gradient-core: #0a0a12; 
+            /* УЛЬТРА-ПРЕМИУМ: Только чистый черный и акцентный синий/белый */
+            --bg-color: #000000; 
             --text-main: #ffffff;
-            --text-muted: #999999;
+            --text-muted: #888888;
             --border-color: rgba(255,255,255,0.06);
-            --card-bg: rgba(10,10,10,0.5); 
+            --card-bg: rgba(10,10,10,0.4); 
             --accent-blue: #4a9eff;
         }
 
-        /* CINEMATIC ENTRANCE */
         body { 
             margin: 0; 
-            background: radial-gradient(circle at center, var(--bg-gradient-core) 0%, var(--bg-color) 100%);
+            background: var(--bg-color);
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
             -webkit-font-smoothing: antialiased; 
             overflow-x: hidden;
-            animation: cinematicFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: cinematicFadeIn 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes cinematicFadeIn {
-            0% { opacity: 0; filter: blur(15px); transform: scale(1.02); }
-            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+            0% { opacity: 0; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        /* НАВИГАЦИЯ */
-        nav { display: flex; justify-content: space-between; padding: 25px 50px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; background: rgba(3, 3, 3, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-        .logo { font-weight: 500; font-size: 1.5rem; letter-spacing: 1px; color: #fff; text-decoration: none; }
-        .nav-links { display: flex; gap: 35px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
+        /* НАВИГАЦИЯ - СТРОГАЯ И ПРОЗРАЧНАЯ */
+        nav { display: flex; justify-content: space-between; padding: 30px 50px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .logo { font-weight: 500; font-size: 1.5rem; letter-spacing: 2px; color: #fff; text-decoration: none; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 400; }
         .nav-links a:hover { color: #fff; }
         
         .lang-dropdown { display: flex; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 4px; }
-        .lang-dropdown a { color: #888; text-decoration: none; font-size: 0.85rem; padding: 6px 14px; border-radius: 16px; transition: 0.3s ease; font-weight: 500; }
+        .lang-dropdown a { color: #888; text-decoration: none; font-size: 0.8rem; padding: 6px 14px; border-radius: 16px; transition: 0.3s ease; font-weight: 500; }
         .lang-dropdown a:hover { color: #fff; }
         .lang-dropdown a.active { background: rgba(255,255,255,0.1); color: #fff; }
 
-        /* HERO СЕКЦИЯ */
+        /* HERO СЕКЦИЯ - 50k+ AESTHETIC */
         .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100vh; justify-content: center; padding: 60px 20px 100px; background: transparent; }
-        .hero-content { position: relative; z-index: 2; width: 100%; pointer-events: none; /* Чтобы мышка просвечивала сквозь текст к 3D сфере */ }
-        .hero-content * { pointer-events: auto; /* Возвращаем кликабельность кнопкам и тексту */ }
         
-        /* 3D ХОЛСТ */
+        /* КИНЕМАТОГРАФИЧНАЯ ВИНЬЕТКА ПОВЕРХ КАНВАСА */
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, #000 100%);
+            z-index: 1; pointer-events: none;
+        }
+
+        .hero-content { position: relative; z-index: 2; width: 100%; pointer-events: none; }
+        .hero-content * { pointer-events: auto; }
+        
+        /* 3D ХОЛСТ - НА САМОМ ДНЕ */
         #heroCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: auto; }
 
-        /* Вращающееся глубокое свечение в центре для контраста 3D модели */
-        .hero-glow-wrapper { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100vh; z-index: 1; pointer-events: none; animation: spinGlow 40s linear infinite; }
-        .hero-glow-2 { position: absolute; top: 30%; left: 30%; right: 30%; bottom: 30%; border-radius: 50%; background: radial-gradient(circle, rgba(20, 80, 255, 0.08) 0%, transparent 70%); filter: blur(60px); }
-        @keyframes spinGlow { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        .badge { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.12); padding: 8px 20px; border-radius: 60px; font-size: 0.9rem; color: #ccc; margin-bottom: 35px; display: inline-flex; align-items: center; gap: 12px; backdrop-filter: blur(10px); }
-        .badge span { background: #fff; color: #000; padding: 3px 10px; border-radius: 20px; font-weight: 600; font-size: 0.75rem; }
+        /* Изящный бейдж */
+        .badge { background: transparent; border: 1px solid rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 60px; font-size: 0.85rem; color: #888; margin-bottom: 40px; display: inline-flex; align-items: center; gap: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; }
+        .badge span { background: #fff; color: #000; padding: 2px 10px; border-radius: 20px; font-weight: 600; font-size: 0.7rem; }
         
-        h1 { font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 400; letter-spacing: -2px; margin: 0 auto; line-height: 1.15; color: #fff; max-width: 1000px; width: 100%; white-space: normal; word-wrap: break-word; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        h1 span { color: #888; font-style: italic; }
+        /* Премиум-типографика */
+        h1 { font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 400; letter-spacing: -3px; margin: 0 auto; line-height: 1.1; color: #fff; max-width: 1100px; width: 100%; white-space: normal; word-wrap: break-word; text-shadow: 0 20px 40px rgba(0,0,0,1); }
+        h1 span { 
+            background: linear-gradient(180deg, #888 0%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: italic; 
+            font-family: 'Georgia', serif;
+            letter-spacing: -1px;
+        }
 
-        .subtitle { color: #aaa; font-size: 1.25rem; max-width: 800px; margin: 35px auto 50px; line-height: 1.6; font-weight: 300; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+        .subtitle { color: #888; font-size: 1.35rem; max-width: 700px; margin: 40px auto 60px; line-height: 1.6; font-weight: 300; text-shadow: 0 10px 20px rgba(0,0,0,1); }
         
-        /* КНОПКИ */
+        /* КНОПКИ - Apple Style */
         .btn-group { display: flex; gap: 20px; justify-content: center; align-items: center; }
-        .btn { padding: 18px 42px; border-radius: 10px; font-size: 1rem; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; }
-        .btn-primary { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .btn-primary:hover { background: #e0e0e0; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(255,255,255,0.15); }
-        .btn-secondary { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
-        .btn-secondary:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-4px); background: rgba(255,255,255,0.06); }
+        .btn { padding: 20px 46px; border-radius: 12px; font-size: 1.05rem; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; }
+        .btn-primary { background: #fff; color: #000; box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,255,255,0.2); }
+        .btn-secondary { background: rgba(255,255,255,0.02); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
+        .btn-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
         
         /* ОБЩИЕ СТИЛИ СЕКЦИЙ */
-        section { padding: 120px 25px; max-width: 1150px; margin: 0 auto; position: relative; z-index: 1; background: transparent; }
-        .section-title { font-size: 3rem; font-weight: 400; text-align: center; color: #fff; margin-bottom: 60px; letter-spacing: -1.5px; line-height: 1.2; }
+        section { padding: 140px 25px; max-width: 1150px; margin: 0 auto; position: relative; z-index: 1; background: transparent; }
+        .section-title { font-size: 3.5rem; font-weight: 400; text-align: center; color: #fff; margin-bottom: 70px; letter-spacing: -2px; line-height: 1.1; }
 
         /* ПЛАВНЫЙ КАСКАДНЫЙ REVEAL ПРИ СКРОЛЛЕ */
         .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -84,622 +94,375 @@
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
 
         /* OUTCOMES */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px 30px; position: relative; padding: 20px 0; }
-        .feature-line-item { text-align: center; position: relative; z-index: 1; }
-        .feature-icon { width: 80px; height: 80px; margin: 0 auto 25px; background: rgba(10,10,10,0.6); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.4s ease; box-shadow: inset 0 10px 20px rgba(255,255,255,0.01); backdrop-filter: blur(10px); }
-        .feature-line-item:hover .feature-icon { border-color: var(--accent-blue); color: var(--accent-blue); transform: translateY(-8px); box-shadow: 0 0 30px rgba(74, 158, 255, 0.15); }
-        .feature-icon svg { width: 30px; height: 30px; stroke-width: 1.5; }
-        .feature-line-item h3 { font-size: 1.3rem; font-weight: 500; margin: 0 0 12px 0; color: #fff; }
-        .feature-line-item p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 300; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px 40px; position: relative; }
+        .feature-line-item { text-align: left; position: relative; z-index: 1; padding: 40px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: 0.4s ease; backdrop-filter: blur(10px); }
+        .feature-line-item:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); transform: translateY(-5px); }
+        .feature-icon { width: 50px; height: 50px; margin-bottom: 25px; color: #fff; }
+        .feature-icon svg { width: 100%; height: 100%; stroke-width: 1.2; }
+        .feature-line-item h3 { font-size: 1.5rem; font-weight: 400; margin: 0 0 15px 0; color: #fff; letter-spacing: -0.5px; }
+        .feature-line-item p { font-size: 1.05rem; color: #777; line-height: 1.6; margin: 0; font-weight: 300; }
 
         /* THE REALITY */
-        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .comp-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 20px; padding: 60px 50px; transition: 0.4s ease; backdrop-filter: blur(10px); }
-        .comp-card h4 { margin: 0 0 30px 0; font-size: 1.3rem; font-weight: 500; color: #888; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .comp-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 24px; padding: 70px 60px; transition: 0.4s ease; backdrop-filter: blur(10px); }
+        .comp-card h4 { margin: 0 0 40px 0; font-size: 1.4rem; font-weight: 400; color: #666; letter-spacing: -0.5px; }
         .comp-list { list-style: none; padding: 0; margin: 0; }
-        .comp-list li { margin-bottom: 25px; display: flex; align-items: flex-start; gap: 15px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.5; font-weight: 300; }
-        .comp-list span { color: #f44336; font-weight: 600; font-size: 1.2rem; line-height: 1; }
-        .comp-card.good { border-color: rgba(74, 158, 255, 0.2); background: rgba(74, 158, 255, 0.02); }
+        .comp-list li { margin-bottom: 30px; display: flex; align-items: flex-start; gap: 20px; color: #888; font-size: 1.1rem; line-height: 1.5; font-weight: 300; }
+        .comp-list span { color: #444; font-weight: 400; font-size: 1.2rem; line-height: 1; }
+        .comp-card.good { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); }
         .comp-card.good h4 { color: #fff; }
         .comp-card.good li { color: #ccc; }
-        .comp-card.good li span { color: #4caf50; }
+        .comp-card.good li span { color: #fff; }
 
-        /* --- BENTO GRID ARCHITECTURE --- */
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1150px; margin: 0 auto; }
-        .bento-card { background: rgba(10,10,10,0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 12px; display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; backdrop-filter: blur(10px); }
-        .bento-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .bento-card:nth-child(1) { grid-column: span 1; } .bento-card:nth-child(2) { grid-column: span 2; }
-        .bento-card:nth-child(3) { grid-column: span 1; } .bento-card:nth-child(4) { grid-column: span 1; }
-        .bento-card:nth-child(5) { grid-column: span 1; } .bento-card:nth-child(6) { grid-column: span 3; }
+        /* MINIMALIST QUOTE */
+        .minimal-quote-section { padding: 150px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+        .mq-text { font-size: clamp(2rem, 5vw, 3.2rem); color: #555; line-height: 1.3; font-weight: 300; margin: 0 0 60px 0; letter-spacing: -1px; }
+        .mq-text .highlight { font-family: 'Georgia', serif; font-style: italic; color: #fff; }
+        .mq-author { display: flex; align-items: center; justify-content: center; gap: 20px; }
+        .mq-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); filter: grayscale(100%); }
+        .mq-role { font-size: 1.1rem; color: #666; font-weight: 300; text-align: left; }
+        .mq-role span { color: #fff; font-weight: 500; display: block; margin-bottom: 4px; }
+
+        /* УЛЬТРА-КЕЙС (Строгий Enterprise стиль) */
+        .ultra-case { background: #050505; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 60px; position: relative; overflow: hidden; backdrop-filter: blur(20px); }
+        .uc-badge { display: inline-block; color: #fff; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid #fff; padding-bottom: 5px; }
+        .uc-title { font-size: 2.5rem; margin: 0 0 15px 0; color: #fff; letter-spacing: -1.5px; font-weight: 400; }
+        .uc-location { color: #666; font-size: 1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 40px; }
+        .uc-block { margin-bottom: 40px; }
+        .uc-block h4 { color: #fff; font-size: 1.2rem; margin: 0 0 20px 0; font-weight: 400; }
+        .uc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px; }
+        .uc-list li { color: #888; margin-bottom: 15px; font-size: 1rem; line-height: 1.6; position: relative; }
+        .uc-list.solution li { color: #ccc; }
         
-        .bento-graphic { background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.002) 100%); border-radius: 16px; height: 220px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.01); box-shadow: inset 0 4px 20px rgba(0,0,0,0.3); }
-        .bento-card:nth-child(6) .bento-graphic { height: 260px; }
-        .bento-text { padding: 30px 20px 10px; }
-        .bento-text h3 { font-size: 1.3rem; color: #fff; margin: 0 0 12px 0; font-weight: 500; letter-spacing: -0.5px; }
-        .bento-text p { font-size: 0.95rem; color: #888; line-height: 1.6; margin: 0; font-weight: 300; }
+        .uc-results { display: flex; flex-direction: column; justify-content: center; }
+        .uc-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .uc-metric-val { font-size: 3rem; color: #fff; font-weight: 400; margin-bottom: 10px; letter-spacing: -2px; }
+        .uc-metric-label { color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .uc-money { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; }
+        .uc-money-val { font-size: 3.5rem; color: #fff; font-weight: 400; margin-bottom: 10px; letter-spacing: -2px; }
 
-        /* BENTO АНИМАЦИИ */
-        .radar-box { width: 100px; height: 100px; border: 1px solid rgba(74, 158, 255, 0.15); border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
-        .radar-sweep { position: absolute; top: 0; left: 50px; width: 50px; height: 50px; background: conic-gradient(from 0deg, transparent, rgba(74, 158, 255, 0.3)); transform-origin: 0% 100%; animation: sweep 2.5s linear infinite; }
-        @keyframes sweep { to { transform: rotate(360deg); } }
-        .flow-container { display: flex; align-items: center; width: 70%; max-width: 400px; justify-content: space-between; }
-        .flow-node { width: 44px; height: 44px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .flow-line { flex-grow: 1; height: 2px; background: rgba(255,255,255,0.03); margin: 0 15px; position: relative; overflow: hidden; }
-        .flow-dot { position: absolute; top: 0; left: -20px; width: 20px; height: 2px; background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); animation: flowMove 1.5s ease-in-out infinite; }
-        @keyframes flowMove { 0% { left: -20px; } 100% { left: 100%; } }
-        .code-window { width: 85%; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 15px; font-family: monospace; font-size: 0.8rem; color: #777; text-align: left; }
-        .code-header { display: flex; gap: 6px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 10px; }
-        .code-dot { width: 10px; height: 10px; border-radius: 50%; background: #222; }
-        .code-cursor { display: inline-block; width: 8px; height: 14px; background: #fff; animation: blink 1s step-end infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        .sonar-wrapper { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
-        .sonar-core { width: 20px; height: 20px; background: var(--accent-blue); border-radius: 50%; box-shadow: 0 0 20px var(--accent-blue); z-index: 2; }
-        .sonar-wave { position: absolute; border: 1px solid var(--accent-blue); border-radius: 50%; animation: sonar 2s ease-out infinite; opacity: 0; top: 0; left: 0; right: 0; bottom: 0; }
-        .sonar-wave:nth-child(2) { animation-delay: 0.6s; }
-        @keyframes sonar { 0% { transform: scale(0.2); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
-        .sync-wrapper { display: flex; align-items: center; gap: 25px; }
-        .sync-box { width: 56px; height: 56px; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-        .sync-arrow { width: 50px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-blue), transparent); animation: syncPulse 1.5s infinite; opacity: 0.3; }
-        @keyframes syncPulse { 0%, 100% { opacity: 0.2; transform: scaleX(0.8); } 50% { opacity: 1; transform: scaleX(1.1); } }
-        .chart-wrapper { display: flex; align-items: flex-end; gap: 3%; height: 140px; width: 80%; justify-content: center; }
-        .chart-bar { width: 10%; max-width: 40px; background: rgba(255,255,255,0.02); border-radius: 6px 6px 0 0; position: relative; overflow: hidden; height: 100%; border: 1px solid rgba(255,255,255,0.01); }
-        .chart-fill { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.1); animation: barGrow 3s ease-out infinite alternate; transform-origin: bottom; }
-        @keyframes barGrow { 0% { transform: scaleY(0.85); } 100% { transform: scaleY(1.05); } }
-
-        /* PROOF OF WORK */
-        .cases-section { padding-top: 60px; }
-        .ultra-case {
-            background: linear-gradient(145deg, rgba(10,10,10,0.4) 0%, rgba(5,5,5,0.4) 100%);
-            border: 1px solid rgba(74, 158, 255, 0.15);
-            border-radius: 24px; padding: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 60px; position: relative; overflow: hidden; backdrop-filter: blur(15px);
-        }
-        .ultra-case::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--accent-blue), transparent); }
-        .uc-badge { display: inline-block; background: rgba(74, 158, 255, 0.08); color: var(--accent-blue); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border: 1px solid rgba(74, 158, 255, 0.1); }
-        .uc-title { font-size: 2.2rem; margin: 0 0 10px 0; color: #fff; letter-spacing: -1px; }
-        .uc-location { color: #888; font-size: 1rem; display: flex; align-items: center; gap: 6px; }
-        .uc-block { margin-bottom: 30px; }
-        .uc-block h4 { color: #fff; font-size: 1.1rem; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px; }
-        .uc-list { list-style: none; padding: 0; margin: 0; }
-        .uc-list li { color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
-        .uc-list.problem li::before { content: '✕'; color: #f44336; }
-        .uc-list.solution li::before { content: '✓'; color: #4caf50; }
-        .uc-results { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; justify-content: center; backdrop-filter: blur(5px); }
-        .uc-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
-        .uc-metric { border-left: 2px solid var(--accent-blue); padding-left: 15px; }
-        .uc-metric-val { font-size: 2rem; color: #fff; font-weight: 500; margin-bottom: 5px; }
-        .uc-metric-label { color: #666; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .uc-money { background: rgba(74, 158, 255, 0.03); border: 1px solid rgba(74, 158, 255, 0.1); padding: 25px; border-radius: 12px; text-align: center; }
-        .uc-money-val { font-size: 2.8rem; color: var(--accent-blue); font-weight: 400; margin-bottom: 5px; }
-        .uc-money-label { color: #ccc; font-size: 1rem; }
-
-        /* MINIMALIST QUOTE (LANDIO STYLE) */
-        .minimal-quote-section { padding: 120px 20px; max-width: 900px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .mq-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 8px 18px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: #aaa; margin-bottom: 40px; backdrop-filter: blur(5px); }
-        .mq-badge svg { width: 14px; height: 14px; color: #fff; }
-        .mq-text { font-size: clamp(1.8rem, 4vw, 2.6rem); color: #888; line-height: 1.4; font-weight: 300; margin: 0 0 50px 0; letter-spacing: -0.5px; }
-        .mq-text .highlight { font-family: 'Georgia', 'Times New Roman', serif; font-style: italic; color: #fff; }
-        .mq-author { display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .mq-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.08); filter: grayscale(100%); }
-        .mq-role { font-size: 1.05rem; color: #aaa; font-weight: 300; }
-        .mq-role span { color: #fff; font-weight: 500; }
-
-        /* TESTIMONIALS */
-        .testimonials-wrapper { display: flex; justify-content: center; width: 100%; margin-top: 10px; }
-        .testi-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 24px; padding: 60px 80px; max-width: 900px; width: 100%; text-align: center; position: relative; margin: 0 auto; backdrop-filter: blur(10px); }
-        .quote-icon { margin-bottom: 20px; display: flex; justify-content: center; opacity: 0.5; }
-        .quote-icon svg { width: 36px; height: 36px; }
-        .testi-text { font-size: 1.5rem; font-weight: 400; line-height: 1.6; margin-bottom: 30px; min-height: 100px; color: #fff; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 8px; }
-        .testi-author { display: flex; align-items: center; justify-content: center; gap: 16px; opacity: 0; transition: opacity 0.5s ease; }
-        .testi-author.active { opacity: 1; }
-        .testi-avatar { width: 44px; height: 44px; border-radius: 50%; background: #222; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); filter: grayscale(100%); }
-        .testi-name { font-weight: 500; font-size: 1rem; color: #fff; margin: 0 0 2px 0; }
-        .testi-role { font-size: 0.85rem; color: #666; margin: 0; }
-
-        /* INVESTMENT (PRICE CARDS) */
-        .pricing-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .carousel-container { display: flex; gap: 30px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 30px 10px 50px; scroll-behavior: smooth; scrollbar-width: none; }
-        .carousel-container::-webkit-scrollbar { display: none; }
-        .pricing-card { min-width: 380px; flex: 0 0 auto; scroll-snap-align: center; background: rgba(10,10,10,0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 50px 40px; position: relative; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; backdrop-filter: blur(10px); }
-        .pricing-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
-        .pricing-card.popular { border-color: rgba(255,255,255,0.1); background: rgba(15,15,15,0.6); transform: scale(1.02); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .pricing-card.popular:hover { border-color: rgba(255,255,255,0.3); }
-        .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 6px 22px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
-        .price-retainer { font-size: 2.8rem; font-weight: 400; margin: 15px 0 5px; color: #fff; letter-spacing: -1.5px; }
-        .price-retainer span { font-size: 1rem; color: #666; }
-        .price-setup { font-size: 0.95rem; color: #aaa; margin-bottom: 25px; line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px;}
-        ul.features { list-style: none; padding: 0; margin: 0 0 25px 0; flex-grow: 1; }
-        ul.features li { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; font-size: 0.95rem; color: #ccc; font-weight: 300; line-height: 1.5; }
-        ul.features svg { flex-shrink: 0; width: 18px; height: 18px; color: #fff; margin-top: 2px; opacity: 0.8; }
-        .value-hint { background: rgba(255,255,255,0.02); color: #aaa; padding: 16px; border-radius: 12px; font-size: 0.9rem; margin-top: auto; text-align: center; border: 1px solid rgba(255,255,255,0.04); }
-        .best-for { text-align: center; font-size: 0.85rem; color: #555; margin-top: 15px; font-style: italic; }
-
-        /* WHO THIS IS FOR */
-        .for-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; margin-top: 30px; }
-        .for-list { list-style: none; padding: 0; }
-        .for-list li { margin-bottom: 20px; font-size: 1.2rem; display: flex; gap: 20px; align-items: center; font-weight: 300; color: #fff; }
-        .for-list.yes span { color: #4caf50; font-size: 1.6rem; font-weight: 600; }
-        .for-list.no li { color: #666; }
-        .for-list.no span { color: #f44336; font-size: 1.6rem; font-weight: 600; }
-
-        /* FAQ (CARD STYLE) */
-        .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-        .faq-item { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; transition: 0.3s; backdrop-filter: blur(10px); }
-        .faq-item:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); }
-        .faq-item.open { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
-        .faq-question { width: 100%; text-align: left; padding: 24px 30px; background: transparent; border: none; color: #fff; font-size: 1.15rem; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit; }
-        .faq-icon { width: 20px; height: 20px; color: #555; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .faq-item.open .faq-icon { transform: rotate(180deg); color: #fff; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; font-weight: 300; opacity: 0; padding: 0 30px; }
-        .faq-item.open .faq-answer { max-height: 300px; opacity: 1; padding-bottom: 30px; }
-
-        /* FINAL CTA & FOOTER */
-        #final-cta { padding: 120px 25px 60px; }
-        .final-cta-card { position: relative; overflow: hidden; background: linear-gradient(145deg, rgba(10,10,10,0.5) 0%, rgba(5,5,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 100px 40px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(15px); }
-        .final-cta-card h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 500; color: #fff; margin: 0 0 20px 0; letter-spacing: -1px; }
-        .final-cta-card p { font-size: 1.2rem; color: #888; margin: 0 0 45px 0; font-weight: 300; }
-        .footer { border-top: 1px solid var(--border-color); padding: 80px 50px; background: transparent; position: relative; z-index: 1; }
-        .footer-content { max-width: 1150px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px; }
-        .footer-left .logo { font-size: 1.6rem; margin-bottom: 12px; display: inline-block; color: #fff; }
-        .footer-left p { color: #444; font-size: 0.9rem; margin: 0; }
-        .footer-links { display: flex; gap: 24px; }
-        .footer-links a { color: #555; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        /* INVESTMENT */
+        .pricing-header { text-align: center; margin-bottom: 60px; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .pricing-card { background: #030303; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 60px 50px; position: relative; transition: 0.4s ease; }
+        .pricing-card:hover { border-color: rgba(255,255,255,0.3); }
+        .price-retainer { font-size: 3.5rem; font-weight: 400; margin: 20px 0 10px; color: #fff; letter-spacing: -2px; }
+        .price-retainer span { font-size: 1.2rem; color: #666; letter-spacing: 0; }
+        .price-setup { font-size: 1rem; color: #888; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        ul.features { list-style: none; padding: 0; margin: 0 0 40px 0; }
+        ul.features li { padding: 15px 0; font-size: 1.05rem; color: #ccc; font-weight: 300; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        
+        /* FOOTER */
+        .footer { border-top: 1px solid var(--border-color); padding: 80px 50px; position: relative; z-index: 1; }
+        .footer-content { max-width: 1150px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .footer-left .logo { font-size: 1.5rem; color: #fff; letter-spacing: 2px; }
+        .footer-links a { color: #666; text-decoration: none; font-size: 0.9rem; margin-left: 30px; transition: 0.3s; }
         .footer-links a:hover { color: #fff; }
-        .footer-socials { display: flex; gap: 16px; }
-        .footer-socials a { width: 45px; height: 45px; border-radius: 50%; background: transparent; border: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; transition: 0.4s ease; color: #444; }
-        .footer-socials a:hover { border-color: #444; color: #fff; background: rgba(255,255,255,0.02); }
-        .footer-socials svg { width: 18px; height: 18px; fill: currentColor; }
 
-        /* MODAL */
-        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(15px); justify-content: center; align-items: center; opacity: 0; transition: 0.4s; }
-        .modal.show { display: flex; opacity: 1; }
-        .modal-content { background: #060606; border: 1px solid var(--border-color); border-radius: 24px; padding: 50px; width: 90%; max-width: 480px; position: relative; }
-        .modal-title { font-size: 1.8rem; margin: 0 0 25px 0; font-weight: 500; }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; font-size: 0.9rem; color: #888; margin-bottom: 10px; }
-        .form-control { width: 100%; box-sizing: border-box; padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 10px; color: #fff; font-family: inherit; font-size: 1rem; transition: 0.3s; }
-        .form-control:focus { outline: none; border-color: var(--accent-blue); background: rgba(255,255,255,0.05); }
-        .close-btn { position: absolute; top: 30px; right: 30px; color: #555; cursor: pointer; font-size: 2rem; transition: 0.3s; }
-        .close-btn:hover { color: #fff; }
-
-        /* MOBILE ADAPTATION */
         @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .bento-card:nth-child(n) { grid-column: span 1; }
-            .ultra-case { grid-template-columns: 1fr; padding: 30px; gap: 30px; }
-        }
-        @media (max-width: 768px) {
-            h1 { font-size: 2.8rem; white-space: normal; letter-spacing: -1px; }
-            .section-title { font-size: 2.4rem; }
-            nav { padding: 20px 25px; }
-            .nav-links { display: none; }
-            .for-grid { grid-template-columns: 1fr; gap: 40px; }
-            .features-grid { grid-template-columns: 1fr; gap: 50px; }
-            .comparison-grid { grid-template-columns: 1fr; }
-            .pricing-card { min-width: 88vw; padding: 40px 30px; }
-            .testi-card { padding: 60px 25px; }
-            .testi-text { font-size: 1.4rem; }
-            .footer-content { flex-direction: column; text-align: center; }
+            .ultra-case, .pricing-grid, .comparison-grid { grid-template-columns: 1fr; padding: 40px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ФОНОВЫЙ ХОЛСТ (3D Сфера Нейросети) -->
+    <!-- КИНЕМАТОГРАФИЧНЫЙ ХОЛСТ (3D ТОПОГРАФИЧЕСКИЙ ЛАНДШАФТ) -->
     <canvas id="heroCanvas"></canvas>
 
-    <!-- НАВИГАЦИЯ -->
     <nav class="reveal delay-1 active">
         <a href="#" class="logo">1NK</a>
         <div class="nav-links">
-            <a href="#outcomes">Outcomes</a>
-            <a href="#capabilities">Architecture</a>
+            <a href="#outcomes">Architecture</a>
+            <a href="#proof">Case Studies</a>
             <a href="#pricing">Investment</a>
-            <a href="#faq">FAQ</a>
         </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div class="lang-dropdown">
-                <a href="#" class="active">EN</a>
-                <a href="#">DE</a>
-            </div>
-            <button onclick="openModal()" class="btn btn-secondary" style="padding: 12px 25px; font-size: 0.85rem;">Book Free Audit</button>
-        </div>
+        <button class="btn btn-secondary" style="padding: 10px 24px; font-size: 0.85rem; border-radius: 8px;">Audit Request</button>
     </nav>
 
-    <!-- 1. HERO -->
     <section class="hero">
-        <div class="hero-glow-wrapper">
-            <div class="hero-glow-2"></div>
-        </div>
-
         <div class="hero-content">
-            <div class="badge reveal delay-1 active"><span>1NK</span> AI Revenue Infrastructure</div>
+            <div class="badge reveal delay-1 active">Enterprise AI Infrastructure</div>
             <h1 class="reveal delay-2 active">You’re not losing clients.<br><span>You’re losing them in your messages.</span></h1>
-            <p class="subtitle reveal delay-3 active">We turn missed messages into booked clients — automatically.<br>More bookings. Same leads. No extra ads.</p>
-            <div class="btn-group reveal delay-4 active">
-                <button onclick="openModal()" class="btn btn-primary">Get Free Lead Audit</button>
-                <a href="#outcomes" class="btn btn-secondary">See how it works</a>
+            <p class="subtitle reveal delay-3 active">We engineer cognitive logic systems that turn missed inquiries into booked revenue. Seamlessly integrated into your geodata and CRM architecture.</p>
+            <div class="btn-group reveal delay-3 active">
+                <button class="btn btn-primary">Deploy Solution</button>
             </div>
         </div>
     </section>
 
-    <!-- 2. OUTCOMES -->
     <section id="outcomes">
-        <h2 class="section-title reveal">Built to capture every dollar.</h2>
+        <h2 class="section-title reveal">Engineered for capture.</h2>
         <div class="features-grid">
             <div class="feature-line-item reveal delay-1">
-                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
-                <h3>+30–50% Bookings</h3>
-                <p>Turn existing traffic and ad clicks into immediate appointments without spending more on marketing.</p>
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+                <h3>Zero Latency Logic</h3>
+                <p>Engage leads in under 10 seconds. We replace human delay with absolute algorithmic precision across all channels.</p>
             </div>
             <div class="feature-line-item reveal delay-2">
-                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <h3>Instant Response</h3>
-                <p>Our AI engages leads across all channels in under 10 seconds, 24/7. Never let a lead go cold.</p>
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                <h3>Geodata Routing</h3>
+                <p>Advanced territorial lead assignment. Automatically route inquiries based on location data and agent availability.</p>
             </div>
             <div class="feature-line-item reveal delay-3">
-                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg></div>
-                <h3>Smart Qualification</h3>
-                <p>Filters out "tire-kickers" by asking the right questions, delivering only high-intent clients to your team.</p>
+                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
+                <h3>Seamless Ecosystem</h3>
+                <p>We bridge the gap between abstract AI and your CRM. Invisible integration that works from day one.</p>
             </div>
         </div>
     </section>
 
-    <!-- 3. THE REALITY -->
-    <section>
-        <h2 class="section-title reveal">You’re not lacking leads.<br>You’re leaking them.</h2>
-        <div class="comparison-grid">
-            <div class="comp-card reveal delay-1">
-                <h4>Without 1NK Logic</h4>
-                <ul class="comp-list">
-                    <li><span>✕</span> Slow replies → lost clients</li>
-                    <li><span>✕</span> Leads forgotten in chats</li>
-                    <li><span>✕</span> No follow-ups after contact</li>
-                </ul>
-            </div>
-            <div class="comp-card good reveal delay-2">
-                <h4>With 1NK Infrastructure</h4>
-                <ul class="comp-list">
-                    <li><span>✓</span> Instant replies to every lead</li>
-                    <li><span>✓</span> All conversations in one system</li>
-                    <li><span>✓</span> Automatic follow-ups for ghosts</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- MINIMALIST QUOTE -->
     <section class="minimal-quote-section reveal">
-        <div class="mq-badge">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Our Philosophy
-        </div>
         <p class="mq-text">
-            We find what to <span class="highlight">automate</span>, who your users are & how AI can optimize your <span class="highlight">workflow</span>. We don't just consult; we build and launch <span class="highlight">real solutions.</span>"
+            "Automation is a commodity. We engineer <span class="highlight">cognitive ecosystems</span> that map user intent and physically increase <span class="highlight">revenue</span>."
         </p>
         <div class="mq-author">
             <img src="IMG_7504.jpeg" alt="Eugen Sinenkow" class="mq-avatar">
-            <span class="mq-role">
-                <a href="#" target="_blank" style="color: #fff; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    Eugen Sinenkow
-                </a> 
-                <span style="color: #666;">&nbsp;—&nbsp; CEO & Lead Developer</span>
-            </span>
-        </div>
-    </section>
-
-    <!-- 4. ARCHITECTURE (BENTO) -->
-    <section id="capabilities">
-        <h2 class="section-title reveal">Simple. Efficient. Scalable.</h2>
-        <div class="bento-grid">
-            <div class="bento-card reveal delay-1">
-                <div class="bento-graphic"><div class="radar-box"><div class="radar-sweep"></div><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div></div>
-                <div class="bento-text"><h3>Data Ecosystems</h3><p>Unified source of truth. All leads synced in one place.</p></div>
-            </div>
-            <div class="bento-card reveal delay-2">
-                <div class="bento-graphic"><div class="flow-container"><div class="flow-node"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div><div class="flow-line"><div class="flow-dot"></div></div><div class="flow-node"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div class="flow-line"><div class="flow-dot"></div></div><div class="flow-node"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg></div></div></div>
-                <div class="bento-text"><h3>Autonomous Pipelines</h3><p>End-to-end tracking from first message to final booking.</p></div>
-            </div>
-            <div class="bento-card reveal delay-1">
-                <div class="bento-graphic"><div class="code-window"><div class="code-header"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div><div><span style="color:#c678dd">const</span> ai = <span style="color:#61afef">new</span> 1NK_Core();</div><div>ai.on(<span style="color:#98c379">'lead'</span>, (data) => {</div><div>&nbsp;&nbsp;qualify(data);<span class="code-cursor"></span></div><div>});</div></div></div>
-                <div class="bento-text"><h3>Cognitive Logic</h3><p>AI that understands context, qualifies intent, and guides clients.</p></div>
-            </div>
-            <div class="bento-card reveal delay-2">
-                <div class="bento-graphic"><div class="sonar-wrapper"><div class="sonar-wave"></div><div class="sonar-wave"></div><div class="sonar-core"></div></div></div>
-                <div class="bento-text"><h3>Zero Latency</h3><p>Engage leads instantly, 24/7. Speed to lead is guaranteed.</p></div>
-            </div>
-            <div class="bento-card reveal delay-3">
-                <div class="bento-graphic"><div class="sync-wrapper"><div class="sync-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div><div class="sync-arrow"></div><div class="sync-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a9eff" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path></svg></div></div></div>
-                <div class="bento-text"><h3>Seamless Connectivity</h3><p>Invisible integration with your existing CRM and tools.</p></div>
-            </div>
-            <div class="bento-card reveal delay-1">
-                <div class="bento-graphic"><div class="chart-wrapper"><div class="chart-bar"><div class="chart-fill" style="height:30%; animation-delay:0s"></div></div><div class="chart-bar"><div class="chart-fill" style="height:50%; animation-delay:0.2s; background:#4a9eff"></div></div><div class="chart-bar"><div class="chart-fill" style="height:40%; animation-delay:0.4s"></div></div><div class="chart-bar"><div class="chart-fill" style="height:70%; animation-delay:0.6s; background:#4caf50"></div></div><div class="chart-bar"><div class="chart-fill" style="height:60%; animation-delay:0.8s"></div></div><div class="chart-bar"><div class="chart-fill" style="height:90%; animation-delay:1s; background:#4a9eff"></div></div><div class="chart-bar"><div class="chart-fill" style="height:100%; animation-delay:1.2s; background:#fff"></div></div></div></div>
-                <div class="bento-text" style="text-align:center; max-width:700px; margin:0 auto"><h3>Predictive Performance</h3><p>Data-backed scaling. Infrastructure that tracks conversation patterns to optimize revenue.</p></div>
+            <div class="mq-role">
+                <span>Eugen Sinenkow</span>
+                CEO & Lead Developer
             </div>
         </div>
     </section>
 
-    <!-- 4.5 PROOF OF WORK -->
-    <section class="cases-section">
-        <h2 class="section-title reveal">The proof is in the revenue.</h2>
+    <section id="proof">
+        <h2 class="section-title reveal">Empirical Data.</h2>
         <div class="ultra-case reveal">
             <div class="uc-content">
-                <div class="uc-header">
-                    <div class="uc-badge">Case Study</div>
-                    <h3 class="uc-title">Aesthetic Med Spa</h3>
-                    <div class="uc-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path></svg> Miami, FL</div>
-                </div>
+                <div class="uc-badge">Deployment 01</div>
+                <h3 class="uc-title">Aesthetic Med Spa</h3>
+                <div class="uc-location">Miami, FL</div>
+                
                 <div class="uc-block">
-                    <h4>❌ Before</h4>
-                    <ul class="uc-list problem">
-                        <li>30–90 min response delays</li>
-                        <li>Zero automated follow-ups</li>
+                    <h4>The Inefficiency</h4>
+                    <ul class="uc-list">
+                        <li>30–90 min response latency</li>
+                        <li>High rate of lead decay</li>
                     </ul>
                 </div>
                 <div class="uc-block">
-                    <h4>⚙️ 1NK Fix</h4>
+                    <h4>1NK Architecture</h4>
                     <ul class="uc-list solution">
-                        <li>Instant replies & AI qualification</li>
-                        <li>Automated multi-step follow-ups</li>
+                        <li>Omnichannel Instant Qualification</li>
+                        <li>Predictive Follow-up Sequences</li>
                     </ul>
                 </div>
             </div>
             <div class="uc-results">
                 <div class="uc-metrics-grid">
-                    <div class="uc-metric"><div class="uc-metric-val">&lt; 2 min</div><div class="uc-metric-label">Response Time</div></div>
-                    <div class="uc-metric"><div class="uc-metric-val" style="color:#4caf50;">+31%</div><div class="uc-metric-label">Bookings</div></div>
+                    <div>
+                        <div class="uc-metric-val">&lt; 2m</div>
+                        <div class="uc-metric-label">Response Time</div>
+                    </div>
+                    <div>
+                        <div class="uc-metric-val">+31%</div>
+                        <div class="uc-metric-label">Appt Volume</div>
+                    </div>
                 </div>
-                <div class="uc-money"><div class="uc-money-val">+$7,500</div><div class="uc-money-label">Additional Monthly Revenue</div></div>
+                <div class="uc-money">
+                    <div class="uc-money-val">+$7,500</div>
+                    <div class="uc-money-label">Net New Monthly Revenue</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 8. FAQ -->
-    <section id="faq">
-        <h2 class="section-title reveal">Common Questions</h2>
-        <div class="faq-container">
-            <div class="faq-item reveal delay-1"><button class="faq-question">Is this just automation?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="faq-answer">No. We focus on engineering the logic that closes deals. Automation is just the tool we use to deliver more booked clients from your existing leads.</div></div>
-            <div class="faq-item reveal delay-2"><button class="faq-question">How fast will I see results?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="faq-answer">Most clients see measurable improvement within the first 1–2 weeks after launch. Immediate ROI is common as we plug revenue leaks.</div></div>
-            <div class="faq-item reveal delay-3"><button class="faq-question">Can you work with our existing tools?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="faq-answer">Yes. We specialize in custom integrations. If your tools have an API, we can bridge them flawlessly into a unified ecosystem.</div></div>
+    <section id="pricing">
+        <div class="pricing-header reveal">
+            <h2 class="section-title">Infrastructure Investment.</h2>
         </div>
-    </section>
-
-    <!-- 9. FINAL CTA -->
-    <section id="final-cta">
-        <div class="final-cta-card reveal">
-            <div style="position: relative; z-index: 1;">
-                <h2>You already have the leads.</h2>
-                <p>Let’s turn them into paying clients. Instantly.</p>
-                <button onclick="openModal()" class="btn btn-primary">Contact Us</button>
+        <div class="pricing-grid reveal">
+            <div class="pricing-card">
+                <div style="color:#888; font-size:0.9rem; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">Growth Tier</div>
+                <div class="price-retainer">$1,000<span> /mo</span></div>
+                <div class="price-setup">Implementation: from $2,000</div>
+                <ul class="features">
+                    <li>Instant Omni-channel Logic</li>
+                    <li>Automated Lead Qualification</li>
+                    <li>Multi-step Reactivation Sequences</li>
+                    <li>Standard CRM Integration</li>
+                </ul>
+                <button class="btn btn-secondary" style="width: 100%;">Initialize</button>
+            </div>
+            <div class="pricing-card" style="border-color: rgba(255,255,255,0.2); background: rgba(20,20,20,0.6);">
+                <div style="color:#fff; font-size:0.9rem; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">Enterprise Engine</div>
+                <div class="price-retainer">$2,000<span> /mo</span></div>
+                <div class="price-setup">Implementation: from $5,000</div>
+                <ul class="features">
+                    <li style="color:#fff;">Dedicated Cognitive Agents</li>
+                    <li style="color:#fff;">Geodata & Territory Routing</li>
+                    <li style="color:#fff;">Custom API Architecture</li>
+                    <li style="color:#fff;">Predictive Revenue Analytics</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;">Request Proposal</button>
             </div>
         </div>
     </section>
 
-    <!-- 10. FOOTER -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-left"><span class="logo">1NK</span><p>© 2026 1NK. Intelligent Revenue Systems.</p></div>
-            <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
-            <div class="footer-socials">
-                <a href="#" target="_blank"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-                <a href="#" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            <div class="footer-left">
+                <span class="logo">1NK</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">System Status</a>
+                <a href="#">Privacy Protocol</a>
             </div>
         </div>
     </footer>
 
-    <!-- МОДАЛКА -->
-    <div id="leadModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 class="modal-title">Book Lead Audit</h3>
-            <form>
-                <div class="form-group"><label>Name</label><input type="text" class="form-control" placeholder="Your name"></div>
-                <div class="form-group"><label>Work Email</label><input type="email" class="form-control" placeholder="name@company.com"></div>
-                <button type="button" class="btn btn-primary" style="width:100%;">Send Request</button>
-            </form>
-        </div>
-    </div>
-
     <script>
         // =======================================================
-        // --- 3D NEURAL NETWORK GLOBE (PURE JS) ---
+        // --- ПРЕМИУМ 3D ТОПОГРАФИЧЕСКИЙ ЛАНДШАФТ (DATA MESH) ---
         // =======================================================
         const canvas = document.getElementById('heroCanvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let nodes = [];
-        const numNodes = 180; // Количество точек на сфере
-        const globeRadius = 350; // Размер планеты
-        const maxConnectionDistance = 120; // Максимальное расстояние для отрисовки линии между точками
-        
-        // Переменные для вращения
-        let rotationX = 0;
-        let rotationY = 0;
+        let time = 0;
         let mouseX = 0;
         let mouseY = 0;
-        let targetRotationX = 0;
-        let targetRotationY = 0;
 
-        function init3DGlobe() {
+        function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            nodes = [];
-
-            // Распределяем точки по сфере с помощью Фибоначчи (Fibonacci sphere)
-            // Это дает красивое, равномерное распределение, как у нейросети
-            const phi = Math.PI * (3 - Math.sqrt(5)); 
-            
-            for (let i = 0; i < numNodes; i++) {
-                const y = 1 - (i / (numNodes - 1)) * 2; 
-                const radius = Math.sqrt(1 - y * y); 
-                const theta = phi * i; 
-
-                const x = Math.cos(theta) * radius;
-                const z = Math.sin(theta) * radius;
-
-                nodes.push({
-                    x: x * globeRadius,
-                    y: y * globeRadius,
-                    z: z * globeRadius,
-                    // Добавляем случайный размер точке для разнообразия
-                    size: Math.random() * 1.5 + 0.5 
-                });
-            }
         }
+        window.addEventListener('resize', resize);
+        resize();
 
-        // Отслеживаем мышь для эффекта параллакса/наклона
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - width / 2) / (width / 2);
-            mouseY = (e.clientY - height / 2) / (height / 2);
-            
-            // Задаем цель для поворота на основе мышки
-            targetRotationY = mouseX * 0.5;
-            targetRotationX = mouseY * 0.5;
+        // Сглаженное слежение за мышью (Lerp) для параллакса
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
+        window.addEventListener('mousemove', e => {
+            // Нормализуем координаты мыши от -1 до 1
+            targetMouseX = (e.clientX - width / 2) / (width / 2);
+            targetMouseY = (e.clientY - height / 2) / (height / 2);
         });
 
-        function render3DGlobe() {
-            ctx.clearRect(0, 0, width, height);
+        function drawTerrain() {
+            // Очищаем в глубокий черный
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 0.003; // Медленная, величественная скорость
+
+            // Плавное приближение текущей мыши к целевой
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+
+            // Настройки сетки
+            const cols = 45; // Плотность по ширине
+            const rows = 60; // Плотность в глубину
+            const spacing = 70; // Расстояние между узлами
             
-            // Плавное авто-вращение + влияние мыши
-            rotationY += 0.002; // Постоянное вращение вокруг своей оси
-            
-            // Мягко дотягиваем наклон сферы к положению мыши
-            let currentTiltX = targetRotationX;
-            let currentTiltY = rotationY + targetRotationY;
+            // Центрируем сетку
+            const offsetX = - (cols * spacing) / 2;
+            const offsetZ = - (rows * spacing) / 2;
 
-            // Центр экрана, но сферу можно немного сдвинуть вправо, если хочется (сейчас по центру)
-            const cx = width / 2; 
-            const cy = height / 2;
+            ctx.save();
+            // Сдвигаем центр отрисовки вниз, чтобы смотреть на ландшафт сверху-вниз
+            ctx.translate(width / 2, height / 2 + 300);
 
-            // Массивы для проекции
-            const projectedNodes = [];
+            // Базовые углы наклона камеры + влияние мышки
+            const tilt = 1.25 + mouseY * 0.15; // Наклон по X (смотрим сверху)
+            const pan = time * 0.5 + mouseX * 0.2; // Вращение вокруг оси Y
 
-            // 1. Проецируем точки из 3D в 2D
-            for (let i = 0; i < nodes.length; i++) {
-                let node = nodes[i];
+            const points = [];
 
-                // Вращение по оси X (наклон)
-                let y1 = node.y * Math.cos(currentTiltX) - node.z * Math.sin(currentTiltX);
-                let z1 = node.y * Math.sin(currentTiltX) + node.z * Math.cos(currentTiltX);
-
-                // Вращение по оси Y (прокрутка)
-                let x2 = node.x * Math.cos(currentTiltY) + z1 * Math.sin(currentTiltY);
-                let z2 = -node.x * Math.sin(currentTiltY) + z1 * Math.cos(currentTiltY);
-
-                // Перспектива (Z-проекция)
-                const fov = 1000; // Поле зрения
-                const scale = fov / (fov + z2);
-                
-                const screenX = cx + x2 * scale;
-                const screenY = cy + y1 * scale;
-
-                projectedNodes.push({
-                    x: screenX,
-                    y: screenY,
-                    z: z2,
-                    scale: scale,
-                    origSize: node.size
-                });
-            }
-
-            // Сортируем точки по Z, чтобы дальние линии рисовались первыми (Z-buffering)
-            projectedNodes.sort((a, b) => b.z - a.z);
-
-            // 2. Рисуем линии (Нейронные связи)
-            for (let i = 0; i < projectedNodes.length; i++) {
-                let p1 = projectedNodes[i];
-                
-                // Если точка ушла слишком далеко назад (за сферу), делаем её прозрачной
-                const alphaFade = Math.max(0, Math.min(1, (globeRadius - p1.z) / (globeRadius * 1.5)));
-                
-                // Рисуем связи только с ближайшими точками
-                for (let j = i + 1; j < projectedNodes.length; j++) {
-                    let p2 = projectedNodes[j];
+            // 1. ВЫЧИСЛЕНИЕ 3D КООРДИНАТ
+            for (let z = 0; z < rows; z++) {
+                points[z] = [];
+                for (let x = 0; x < cols; x++) {
+                    let px = offsetX + x * spacing;
+                    let pz = offsetZ + z * spacing;
                     
-                    // Оптимизация: проверяем дистанцию в 2D
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    // МАТЕМАТИКА ЛАНДШАФТА (Сложные синусоиды создают горы и долины)
+                    let dist = Math.sqrt(px*px + pz*pz);
+                    
+                    // Волна 1: Крупные дюны
+                    let py = Math.sin(px * 0.003 + time * 2) * Math.cos(pz * 0.003 - time) * 180;
+                    // Волна 2: Мелкая рябь, расходящаяся от центра
+                    py += Math.sin(dist * 0.01 - time * 4) * 60;
+                    
+                    // Вращение сцены (Панорамирование)
+                    let rx = px * Math.cos(pan) - pz * Math.sin(pan);
+                    let rz = px * Math.sin(pan) + pz * Math.cos(pan);
 
-                    if (dist < maxConnectionDistance * p1.scale) {
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        
-                        // Цвет линии зависит от дистанции: чем ближе, тем ярче синий
-                        const lineAlpha = (1 - dist / (maxConnectionDistance * p1.scale)) * alphaFade * 0.5;
-                        ctx.strokeStyle = `rgba(74, 158, 255, ${lineAlpha})`;
-                        ctx.lineWidth = 1 * p1.scale;
-                        ctx.stroke();
-                    }
+                    // Наклон сцены (Tilt)
+                    let ry = py * Math.cos(tilt) - rz * Math.sin(tilt);
+                    rz = py * Math.sin(tilt) + rz * Math.cos(tilt);
+
+                    // 3D Проекция перспективы (Camera Field of View)
+                    let fov = 1000;
+                    let zPos = rz + 1200; // Отдаляем камеру назад
+                    
+                    // Защита от деления на ноль/артефактов за спиной
+                    if(zPos < 10) zPos = 10; 
+                    
+                    let scale = fov / zPos;
+
+                    let sx = rx * scale;
+                    let sy = ry * scale;
+
+                    points[z].push({x: sx, y: sy, scale: scale, z: zPos});
                 }
-
-                // 3. Рисуем саму точку (Узел)
-                ctx.beginPath();
-                ctx.arc(p1.x, p1.y, p1.origSize * p1.scale, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${alphaFade * 0.8})`;
-                ctx.fill();
             }
 
-            requestAnimationFrame(render3DGlobe);
+            // 2. ОТРИСОВКА ЛИНИЙ (WIREFRAME)
+            ctx.lineWidth = 1;
+            
+            for (let z = 0; z < rows - 1; z++) {
+                for (let x = 0; x < cols - 1; x++) {
+                    let p = points[z][x];
+                    let pRight = points[z][x+1];
+                    let pDown = points[z+1][x];
+
+                    // Убираем точки, которые оказались сзади камеры
+                    if (p.z < 100) continue;
+
+                    // ЗАТУХАНИЕ (Fade out): Чем дальше от центра, тем прозрачнее
+                    let distToCenterX = Math.abs(x - cols/2) / (cols/2);
+                    let distToCenterZ = Math.abs(z - rows/2) / (rows/2);
+                    let edgeFade = Math.max(0, 1 - (distToCenterX*distToCenterX + distToCenterZ*distToCenterZ));
+                    
+                    // Затухание вдаль по оси Z
+                    let depthFade = Math.max(0, 1 - (p.z - 1000) / 3000);
+                    
+                    let finalAlpha = edgeFade * depthFade * 0.6; // 0.6 - максимальная непрозрачность линий
+
+                    // Эффект "Толщины" - чем ближе, тем толще линия
+                    ctx.lineWidth = Math.min(2, p.scale * 1.5);
+                    
+                    // Цвет: Чистый, холодный серебристо-белый
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${finalAlpha})`;
+
+                    // Горизонтальная линия
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(pRight.x, pRight.y);
+                    ctx.stroke();
+
+                    // Вертикальная линия
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(pDown.x, pDown.y);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+            requestAnimationFrame(drawTerrain);
         }
 
-        init3DGlobe();
-        render3DGlobe();
-        window.addEventListener('resize', init3DGlobe);
+        // Запуск
+        drawTerrain();
 
-        // =======================================================
-        // --- ОСТАЛЬНОЙ СКРИПТ (REVEAL, ОТЗЫВЫ, FAQ, MODAL) ---
-        // =======================================================
-
+        // Обычный reveal контента
         const observer = new IntersectionObserver(entries => {
             entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
         }, {threshold: 0.1});
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
-
-        const reviews = [
-            { text: "I was skeptical about AI, but 1NK rebuilt our inquiry flow. Leads are qualified and booked in 45 seconds. Paid for itself in week two.", name: "Marcus T.", role: "Owner, Roofing Co.", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" },
-            { text: "Our late-night Instagram DMs were a mess. 1NK built a system that answers questions and collects deposits while we sleep. Bookings jumped 42%.", name: "Dr. Sarah J.", role: "Med Spa Director", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" }
-        ];
-        let currentReviewIndex = 0;
-        let isAnimating = false;
-        function renderReview(index) {
-            if(isAnimating) return; isAnimating = true;
-            const textContainer = document.getElementById('testi-text');
-            const authorContainer = document.getElementById('testi-author');
-            const avatarContainer = document.getElementById('testi-avatar-container');
-            authorContainer.classList.remove('active'); textContainer.innerHTML = '';
-            avatarContainer.innerHTML = `<img src="${reviews[index].avatar}" alt="${reviews[index].name}">`;
-            document.getElementById('testi-name').innerText = reviews[index].name;
-            document.getElementById('testi-role').innerText = reviews[index].role;
-            const words = reviews[index].text.split(' ');
-            words.forEach((word, i) => {
-                const span = document.createElement('span'); span.innerText = word;
-                span.style.opacity = '0'; span.style.transform = 'translateY(10px)';
-                span.style.transition = '0.4s ease'; span.style.transitionDelay = `${i * 0.04}s`;
-                textContainer.appendChild(span);
-                setTimeout(() => { span.style.opacity = '1'; span.style.transform = 'translateY(0)'; }, 50);
-            });
-            setTimeout(() => { authorContainer.classList.add('active'); isAnimating = false; }, words.length * 40 + 400);
-        }
-        function nextReview() { currentReviewIndex = (currentReviewIndex + 1) % reviews.length; renderReview(currentReviewIndex); }
-        function prevReview() { currentReviewIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length; renderReview(currentReviewIndex); }
-        renderReview(0);
-
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.onclick = () => {
-                const item = q.parentElement; const isOpen = item.classList.contains('open');
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-                if(!isOpen) item.classList.add('open');
-            }
-        });
-        const modal = document.getElementById('leadModal');
-        function openModal() { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10); }
-        function closeModal() { modal.classList.remove('show'); setTimeout(() => modal.style.display = 'none', 400); }
-        window.onclick = e => { if(e.target == modal) closeModal(); }
     </script>
 </body>
 </html>
